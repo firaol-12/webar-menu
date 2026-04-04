@@ -1,0 +1,370 @@
+html, body {
+    position: relative; 
+    margin: 0; 
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+.category-btn.highlighted {
+    background-color: #ff9800;
+    color: white;
+}
+.menu-item.highlighted {
+    background-color: #ff9800;
+    color: white;
+    /* border-radius: 8px; */
+    padding: 8px 8px;
+    /* margin: 2px 0; */
+    width: 100%;
+    /* font-weight: bold; */
+    transition: all 0.3s ease;
+}
+#rotate-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.price-item.highlighted {
+    background-color: #ff9800;
+    color: white;
+    /* border-radius: 8px; */
+    padding: 8px 8px;
+    /* margin: 2px 0; */
+    /* font-weight: bold; */
+    transition: all 0.3s ease;
+}
+
+/* Hide AR elements by default */
+.ar-element {
+    visibility: hidden;
+    position: absolute;
+}
+
+.container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    height: 100vh;
+}
+.left-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+/* Categories */
+#categories{
+    z-index: 100;
+    /* background: rgba(255, 255, 255, 0.9); */
+    border-radius: 10px;
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    padding-top: 30px;
+    top: 5px;
+    gap: 5px;
+    width: 100%;
+    height: 50px;
+}
+
+.category-btn{
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.594);
+    border: none;
+    font-size: small;
+    /* border-radius: 5px; */
+    cursor: pointer;
+    color: white;
+    width: 70px;
+    height: 40px;
+}
+
+.order-btn{
+    padding: 4px 10px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    /* border-radius: 50%; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    height: 40px;
+    width: 100px;
+}
+
+.order-img, .lang-icon, .drink-icon{
+    width: 30px;
+    height: 30px;
+}
+
+.show-order{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    height:100px;
+
+}
+/* 3D View */
+#view3d {
+    width: 100%;
+    height: 200px;
+    /* background: rgba(240, 240, 240, 0.9); */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 250px;
+    border-radius: 10px;
+}
+.arrow-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+}
+
+.arrow-div1{
+    z-index: 100;
+    /* width: 800px; */
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border-radius: 50%;
+    /* padding-left: 20px; */
+}
+.arrow-div2{
+    z-index: 100;
+    /* width: 800px; */
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    border-radius: 50%;
+    /* padding-right: 60px; */
+}
+.arrow-div .left{
+    position: absolute;
+    left: 10px;
+}
+
+.arrow-div .right{
+    position: absolute;
+    right: 0px;
+}
+.arrow-icon{
+    width: 50px;
+    height: 50px;
+}
+
+/* Order Section */
+#orderSection {
+    z-index: 100;
+    /* background: rgba(255, 255, 255, 0.9); */
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    height: 60px;
+}
+
+.order-now {
+    padding: 12px 25px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    /* border-radius: 5px; */
+    font-size: 18px;
+    width: 200px;
+    cursor: pointer;
+}
+.language{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: #ff9800;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.drinks-btn {
+    padding: 10px 20px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    /* border-radius: 5px; */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+/* Food List */
+#foodList {
+    z-index: 100;
+    width: 100%;
+    height: 30vh;
+    background: rgba(0, 0, 0, 0.594);
+    /* padding: 20px; */
+    padding-bottom: 30px;
+    /* border-radius: 10px; */
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.food-title {
+    color: white;
+    text-align: center;
+    /* margin-bottom: 20px; */
+    /* border-bottom: 1px solid #ddd; */
+}
+
+.title{
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0px;
+}
+
+.menu-items {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    flex: 1;              /* takes remaining height */
+    overflow-y: auto;
+    overflow-x: hidden;     /* vertical scroll */
+    padding: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.menu-item {
+    margin: 8px 0;
+    font-size: small;
+    width: 140px;
+}
+
+.price-item {
+    margin: 8px 0;
+    width: 80px;
+    font-size: small;
+    /* font-weight: bold; */
+}
+
+.cart-panel {
+  position: absolute;
+  top: 110px;
+  visibility: hidden;
+  right: 14px;
+  width: 260px;
+  background: rgba(0, 0, 0, 0.594);
+  color: white;
+  padding: 10px;
+  z-index: 9999;
+  box-shadow: 10 10 10 rgba(0, 0, 0, 0.594);
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-panel h3 {
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.cart-item button {
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.cart-panel.show {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.h3{
+    margin: 0px;
+    padding: 0px;
+    height: 10px;
+}
+#back-menu-btn {
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.cart-total {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 16px;
+}
+
+
+/* Header & footer take fixed space */
+.cart-header,
+.cart-footer {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 👇 THIS MAKES IT SCROLL */
+.cart-body {
+  flex: 1;              /* takes remaining height */
+  overflow-y: auto;     /* vertical scroll */
+  padding: 10px;
+}
+
+/* Optional polish */
+#cart-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
