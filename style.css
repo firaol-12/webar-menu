@@ -505,11 +505,29 @@ html, body {
         align-items: center;
         cursor: pointer;
     }
-    .freeze-btn {
+    .freeze-div {
         position: absolute;
         right: 18px;
-        bottom: 160px;
+        bottom: 208px;
         z-index: 100;
+    }
+
+    .freeze-btn {
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #ff9800;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #freezeIcon {
+        object-fit: cover;
+        width: 40px;
+        height: 40px;
     }
 }
 
@@ -725,12 +743,29 @@ html, body {
         z-index: 100;
     }
 
+    .freeze-btn {
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #ff9800;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #freezeIcon {
+        object-fit: cover;
+        width: 40px;
+        height: 40px;
+    }
+
 }
 
 /* Freeze Button Styles - Place this at the end of your CSS file, OUTSIDE any @media blocks */
-.freeze-btn {
+/* .freeze-btn { */
     /* position: fixed; */
-    bottom: 16px;
+    /* bottom: 16px;
     left: 18px;
     width: 40px;
     height: 40px;
@@ -744,12 +779,12 @@ html, body {
     padding: 0;
     z-index: 100;
     transition: background 0.3s;
-            left: 30px;
+            left: 30px; */
         /* visibility: visible; */
-        bottom: 160px;
-}
+        /* bottom: 160px; */
+/* } */
 
-.freeze-btn:active {
+/* .freeze-btn:active {
     transform: scale(0.95);
 }
 
@@ -757,21 +792,21 @@ html, body {
     width: 20px;
     height: 20px;
     filter: brightness(0) invert(1);
-}
+} */
 
 /* Mobile optimization for freeze button */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .freeze-btn {
         width: 40px;
         height: 40px;
         bottom: 20px;
-        left: 18px;
+        left: 18px; */
         /* visibility: visible; */
-        bottom: 160px;
+        /* bottom: 160px;
     }
     
     #freezeIcon {
         width: 20px;
         height: 20px;
     }
-}
+} */
