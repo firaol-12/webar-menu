@@ -765,7 +765,7 @@ html, body {
         z-index: 100;
         transition: background 0.3s;
             left: 30px; 
-            visibility: visible; 
+            visibility: hidden; 
             bottom: 160px;
     }
     #freezeIcon {
