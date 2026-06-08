@@ -505,6 +505,12 @@ html, body {
         align-items: center;
         cursor: pointer;
     }
+    .freeze-btn {
+        position: absolute;
+        right: 18px;
+        bottom: 160px;
+        z-index: 100;
+    }
 }
 
 @media (orientation: landscape) {
@@ -712,13 +718,20 @@ html, body {
         cursor: pointer;
     }
 
+    .freeze-div{
+        position: absolute;
+        left: 50px;
+        bottom: 50px;
+        z-index: 100;
+    }
+
 }
 
 /* Freeze Button Styles - Place this at the end of your CSS file, OUTSIDE any @media blocks */
 .freeze-btn {
-    position: fixed;
-    bottom: 270px;
-    left: 30px;
+    /* position: fixed; */
+    bottom: 16px;
+    left: 18px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -729,7 +742,7 @@ html, body {
     align-items: center;
     justify-content: center;
     padding: 0;
-    z-index: 10000;
+    z-index: 100;
     transition: background 0.3s;
             left: 30px;
         /* visibility: visible; */
