@@ -8,53 +8,24 @@ html, body {
     overflow: hidden;
     font-family: Arial, sans-serif;
 }
-/* Add this to your CSS - make sure lower can be visible */
-.lower {
-    visibility: hidden; /* Keep this as default */
-    opacity: 0;
-    transition: all 0.3s ease;
-}
 
-.lower.show-ui {
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.lower.hidden-ui {
-    visibility: hidden !important;
-    opacity: 0 !important;
-}
 .category-btn.highlighted {
     background-color: #ff9800;
     color: white;
 }
+
 .menu-item.highlighted {
     background-color: #ff9800;
     color: white;
-    /* border-radius: 8px; */
     padding: 8px 8px;
-    /* margin: 2px 0; */
     width: 100%;
-    /* font-weight: bold; */
     transition: all 0.3s ease;
 }
-#rotate-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
+
 .price-item.highlighted {
     background-color: #ff9800;
     color: white;
-    /* border-radius: 8px; */
     padding: 8px 8px;
-    /* margin: 2px 0; */
-    /* font-weight: bold; */
     transition: all 0.3s ease;
 }
 
@@ -64,7 +35,7 @@ html, body {
     position: absolute;
 }
 
-.container{
+.container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -72,127 +43,92 @@ html, body {
     width: 100%;
     height: 100vh;
 }
-.left-container{
+
+.left-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 100vh;
 }
+
 /* Categories */
-#categories{
-    z-index: 100;
-    /* background: rgba(255, 255, 255, 0.9); */
-    border-radius: 10px;
-    display: flex;
-    flex-wrap:wrap;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    padding-top: 10px;
-    top: 5px;
-    gap: 5px;
-    width: 100%;
-    height: 50px;
-}
 
-.category-btn{
-    padding: 4px 10px;
-    background: rgba(0, 0, 0, 0.594);
-    border: none;
-    font-size: small;
-    border-radius: 20px;
-    cursor: pointer;
-    color: white;
-    width: 75px;
-    height: 30px;
-}
 
-.order-btn{
+.order-btn {
     padding: 4px 10px;
     background: #4CAF50;
     color: white;
     border: none;
-    /* border-radius: 50%; */
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 10px;
     cursor: pointer;
-    height: 40px;
-    width: 100px;
-}
-
-.order-img, .lang-icon, .drink-icon{
-    width: 30px;
     height: 30px;
+    width: 75px;
+    border-radius: 20px;
 }
 
-.show-order{
+.order-img, .lang-icon, .drink-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.show-order {
     display: flex;
     justify-content: start;
     align-items: center;
     width: 100%;
-    height:100px;
-
+    height: 50px;
 }
+
 /* 3D View */
 #view3d {
     width: 100%;
     height: 200px;
-    /* background: rgba(240, 240, 240, 0.9); */
     display: flex;
     justify-content: space-around;
     align-items: center;
     gap: 250px;
     border-radius: 10px;
 }
-.arrow-btn{
+
+.arrow-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: none;
+    cursor: pointer;
 }
 
-.arrow-div1{
+.arrow-div1 {
     z-index: 100;
-    /* width: 800px; */
     display: flex;
     justify-content: start;
     align-items: center;
     border-radius: 50%;
-    /* padding-left: 20px; */
 }
-.arrow-div2{
+
+.arrow-div2 {
     z-index: 100;
-    /* width: 800px; */
     display: flex;
     justify-content: end;
     align-items: center;
     border-radius: 50%;
-    /* padding-right: 60px; */
-}
-.arrow-div .left{
-    position: absolute;
-    left: 10px;
 }
 
-.arrow-div .right{
-    position: absolute;
-    right: 0px;
-}
-.arrow-icon{
-    width: 50px;
-    height: 50px;
+.arrow-icon {
+    width: 40px;
+    height: 40px;
 }
 
 /* Order Section */
 #orderSection {
     z-index: 100;
-    /* background: rgba(255, 255, 255, 0.9); */
     padding: 15px;
     border-radius: 10px;
     display: flex;
@@ -204,6 +140,7 @@ html, body {
     width: 100%;
     height: 60px;
 }
+
 
 .order-now {
     padding: 12px 25px;
@@ -218,73 +155,19 @@ html, body {
     height: 30px;
     cursor: pointer;
 }
-.language{
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    background-color: #ff9800;
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.drinks-btn {
-    padding: 10px 20px;
-    background-color: #ff9800;
-    color: white;
-    border: none;
-    /* border-radius: 5px; */
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-}
-
-/* Food List */
-/* #foodList {
-    z-index: 100;
-    width: 100%;
-    height: 30vh;
-    background: rgba(0, 0, 0, 0.594); */
-    /* padding: 20px; */
-    /* padding-bottom: 30px; */
-    /* border-radius: 10px; */
-    /* display: flex;
-    flex-direction: column;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-} */
-
-.food-title {
-    color: white;
-    text-align: center;
-    /* margin-bottom: 20px; */
-    border-bottom: 1px solid #ddd;
-}
-
-.title{
+.title {
     display: flex;
     justify-content: center;
     margin: 0px;
-    border-bottom: 1px solid #ddd; 
+    border-bottom: 1px solid #ddd;
     height: 50px;
     align-items: center;
 }
 
-.order-sec{
-    display: flex;
-    justify-content: center;
-    /* box-shadow: 0 -15px 20px rgba(0, 0, 0, 0.6); */
-    align-items: start;
-    height: 95px;
-}
-
-.food-list{
+.food-list {
     color: white;
     font-size: larger;
-    /* padding-top: 25px; */
     margin: 0px;
     font-family: "Merienda", cursive;
     font-optical-sizing: auto;
@@ -292,250 +175,281 @@ html, body {
     font-style: normal;
 }
 
-
-
-
 .menu-item {
     margin: 8px 0;
     font-size: small;
     width: 140px;
+    cursor: pointer;
 }
 
 .price-item {
     margin: 8px 0;
     width: 80px;
     font-size: small;
-    /* font-weight: bold; */
 }
 
-
 .cart-panel h3 {
-  margin: 0 0 10px 0;
-  text-align: center;
+    margin: 0 0 10px 0;
+    text-align: center;
 }
 
 .cart-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
 }
 
 .cart-item button {
-  background: red;
-  color: white;
-  border: none;
-  cursor: pointer;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cart-panel.show {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .cart-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
 }
 
-.h3{
+.h3 {
     margin: 0px;
     padding: 0px;
     height: 10px;
 }
+
 #back-menu-btn {
-  border: none;
-  background: #eee;
-  cursor: pointer;
-  padding: 4px 8px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+    padding: 4px 8px;
 }
 
 .cart-total {
-  margin-top: 10px;
-  text-align: right;
-  font-size: 16px;
+    margin-top: 10px;
+    text-align: right;
+    font-size: 16px;
 }
 
-
-/* Header & footer take fixed space */
-.cart-header,
-.cart-footer {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-}
-
-/* 👇 THIS MAKES IT SCROLL */
 .cart-body {
-  flex: 1;              /* takes remaining height */
-  overflow-y: auto;     /* vertical scroll */
-  padding: 10px;
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
 }
 
-/* Optional polish */
 #cart-items {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .cart-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
 }
+
 #lower span, #lower h3 {
-  transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 #foodList, #lower {
-  transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
 /* Hidden state */
 .hidden-ui {
-  opacity: 0;
-  visibility: hidden;
+    opacity: 0;
+    visibility: hidden;
 }
 
 /* Visible state */
 .show-ui {
-  opacity: 1;
-  visibility: visible;
+    opacity: 1;
+    visibility: visible;
 }
 
+/* Prevent transitions when hidden */
+.hidden-ui {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.category-btn .all{
+    width: 40px;
+}
 
 @media (orientation: portrait) {
     #foodList {
         z-index: 100;
-        width: 100%;
-        height: 38%;
+        width: 94%;
+        height: 50%;
         background: rgba(0, 0, 0, 0.594);
-        /* padding: 20px; */
-        /* padding-bottom: 50px; */
-        /* border-radius: 10px; */
+        backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
         position: absolute;
-        right: 0;
-        bottom: 0;
-        border-top-left-radius: 30px;
-        border-top-right-radius: 30px;
-        visibility: hidden;
-        opacity: 0;
+        top: 25%;
+        right: 3%;
+        left: 3%;
+        border-radius:30px ;
         transform: translateY(100%);
-        transition: all 0.3s ease;
     }
 
     #foodList.show-ui {
         transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
     }
 
     #foodList.hidden-ui {
         transform: translateY(100%);
-        opacity: 0;
     }
-    .cancel{
-        /* visibility: visible; */
-        /* visibility: hidden; */
+
+    .cancel {
         width: 50px;
         height: 50px;
         color: #914caf;
         position: absolute;
         right: 15px;
         top: -25px;
-
     }
+
     .cart-panel {
         position: absolute;
         top: 110px;
-        /* visibility: hidden; */
         right: 14px;
         width: 260px;
         background: rgba(0, 0, 0, 0.594);
+        backdrop-filter: blur(10px);
         color: white;
         padding: 10px;
         z-index: 9999;
-        box-shadow: 10 10 10 rgba(0, 0, 0, 0.594);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.594);
         height: 250px;
         display: flex;
         flex-direction: column;
+        border-radius: 10px;
     }
+
     .menu-items {
         display: flex;
         justify-content: space-between;
         color: white;
-        flex: 1;              /* takes remaining height */
+        flex: 1;
         overflow-y: auto;
-        overflow-x: hidden;     /* vertical scroll */
+        overflow-x: hidden;
         padding: 10px 35px;
         margin-bottom: 40px;
-        /* border-bottom: 1px solid #ddd; */
-        /* visibility: hidden; */
-        
     }
-    .lower{
+
+    .lower {
         background: rgba(0, 0, 0, 0.594);
+        backdrop-filter: blur(10px);
         color: white;
-        position: absolute;
-        bottom: 10px;
-        width: 355px;
-        /* margin: 0px 20px; */
+        /* position: absolute;
+        bottom: 10px; */
+        width: calc(100% - 40px);
         padding: 10px;
         height: 70px;
         z-index: 100;
-        visibility: hidden;
         display: flex;
-        /* flex-direction: column; */
         justify-content: center;
         align-items: center;
         gap: 5px;
         border-radius: 50px;
-        margin-bottom: 20px;
-        opacity: 1;
+        /* margin: 0 20px 20px 20px; */
+        /* left: 0;
+        right: 0; */
     }
 
-    .mini-container{
+    #categories {
+        background: rgba(0, 0, 0, 0.594);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 15px;
+        left: 3%;
+        right: 3%;
+        width: 94%;
+        height: 30px;
+        border-radius: 20px;
+        padding: 5px 0px;
+    }
+
+    .category-btn {
+        padding: 4px 10px;
+        background: none;
+        border: none;
+        font-size: small;
+        cursor: pointer;
+        color: white;
+        width: 70px;
+        height: 30px;
+        border-radius: 20px;
+    }
+
+    .all{
+        width: 40px;
+    }
+
+
+    .mini-container {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
+        height: 100px;
+        position:absolute;
+        bottom: 60px;
     }
 
-    .order{
+    .order {
         width: 130px;
         height: 40px;
     }
 
-    .order button{
+    .order button {
         padding: 8px 10px;
         font-size: 16px;
         border-radius: 50px;
         width: 100%;
         height: 100%;
         border: none;
+        cursor: pointer;
     }
 
-    .frist, .last{
+    .frist, .last {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 50px;
         width: 80px;
-        /* border: 1px solid; */
         text-align: center;
     }
-    .text{
+
+    .text {
         margin: 0;
         font-size: 15px;
     }
 
-    .middle{
+    .middle {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -543,55 +457,54 @@ html, body {
         height: 50px;
         width: 130px;
         gap: 10px;
-        /* border: 1px solid; */
-        text-align: center;       
+        text-align: center;
     }
-    
-    .menu-icon{
+
+    .menu-icon {
         position: absolute;
         right: 18px;
-        bottom: 140px;
-        visibility: hidden;
-        /* width: 50px;
-        height: 50px; */
+        bottom: 160px;
         z-index: 100;
     }
 
-    .menu-icon-btn{
+    .menu-icon-btn {
         border: none;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: #ff9800;
-    }
-    .img-menu{
-        object-fit: cover;
         width: 40px;
         height: 40px;
+        border-radius: 50%;
+        background: #ff9800;
+        cursor: pointer;
     }
-    .img-menu-icon{
+
+    .img-menu {
         object-fit: cover;
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
     }
-    .img-cancel{
+
+    .img-menu-icon {
+        object-fit: cover;
+        width: 20px;
+        height: 20px;
+    }
+
+    .img-cancel {
         width: 40px;
         height: 40px;
         object-fit: cover;
     }
 
-    .menu-cancel-btn{
-        width: 40px;
-        height: 40px;
+    .menu-cancel-btn {
+        width: 35px;
+        height: 35px;
         border: none;
         border-radius: 50%;
         background: white;
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
     }
-
-
 }
 
 @media (orientation: landscape) {
@@ -600,147 +513,149 @@ html, body {
         width: 50%;
         height: 60%;
         background: rgba(0, 0, 0, 0.594);
-        /* padding: 20px; */
-        /* padding-bottom: 30px; */
-        /* border-radius: 10px; */
+        backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
         position: absolute;
-        left:25%;
-        top: 40%;
-        bottom: 0;
-        border-top-left-radius: 30px;
-        border-top-right-radius: 30px;
-        visibility: hidden;
-        opacity: 0;
+        left: 25%;
+        top: 20%;
+        border-radius: 30px;
         transform: translateY(100%);
-        transition: all 0.3s ease;
-
     }
+
     #foodList.show-ui {
         transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
     }
 
     #foodList.hidden-ui {
         transform: translateY(100%);
-        opacity: 0;
     }
 
-    .cancel{
-        /* visibility: visible; */
-        /* visibility: hidden; */
+    .cancel {
         width: 50px;
         height: 50px;
-        color: #914caf;
         position: absolute;
         right: 15px;
         top: -25px;
-
-    }
-
-    .food-container{
-        visibility: hidden;
-    }
-
-    .left-container{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        height: 100%;
     }
 
     .menu-items {
         display: flex;
         justify-content: space-between;
         color: white;
-        flex: 1;              /* takes remaining height */
+        flex: 1;
         overflow-y: auto;
-        overflow-x: hidden;     /* vertical scroll */
+        overflow-x: hidden;
         padding: 10px 35px;
         margin-bottom: 40px;
-        /* border-bottom: 1px solid #ddd; */
-        /* visibility: hidden; */
-        
     }
 
-    .lower{
+    .lower {
         background: rgba(0, 0, 0, 0.594);
+        backdrop-filter: blur(10px);
         color: white;
         position: absolute;
         bottom: 10px;
         width: 40%;
-        /* margin: 0px 20px; */
         padding: 10px;
         height: 70px;
         z-index: 100;
-        visibility: hidden;
         display: flex;
-        /* flex-direction: column; */
         justify-content: center;
         align-items: center;
         gap: 5px;
         border-radius: 50px;
         margin-bottom: 20px;
-        opacity: 1;
         left: 30%;
     }
 
-    .mini-container{
+    .mini-container {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
     }
 
+    #categories{
+        z-index: 100;
+        /* background: rgba(255, 255, 255, 0.9); */
+        border-radius: 10px;
+        display: flex;
+        flex-wrap:wrap;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        padding-top: 10px;
+        top: 5px;
+        gap: 5px;
+        width: 100%;
+        height: 50px;
+    }
+
+    .category-btn{
+        padding: 4px 10px;
+        background: rgba(0, 0, 0, 0.594);
+        border: none;
+        font-size: small;
+        border-radius: 20px;
+        cursor: pointer;
+        color: white;
+        width: 75px;
+        height: 30px;
+    }
+
+    .category-btn .all{
+        width: 75px;
+    }
+
     .cart-panel {
         position: absolute;
         top: 80px;
-        visibility: hidden;
         right: 14px;
         width: 260px;
         background: rgba(0, 0, 0, 0.594);
+        backdrop-filter: blur(10px);
         color: white;
         padding: 10px;
         z-index: 9999;
-        box-shadow: 10 10 10 rgba(0, 0, 0, 0.594);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.594);
         height: 250px;
         display: flex;
         flex-direction: column;
+        border-radius: 10px;
     }
 
-    .frist, .last{
+    .frist, .last {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 50px;
         width: 80px;
-        /* border: 1px solid; */
         text-align: center;
     }
-    .text{
+
+    .text {
         margin: 0;
         font-size: 15px;
     }
 
-    .order{
+    .order {
         width: 130px;
         height: 40px;
     }
 
-    .order button{
+    .order button {
         padding: 8px 10px;
         font-size: 16px;
         border-radius: 50px;
         width: 100%;
         height: 100%;
         border: none;
+        cursor: pointer;
     }
 
-    .middle{
+    .middle {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -748,53 +663,102 @@ html, body {
         height: 50px;
         width: 130px;
         gap: 10px;
-        /* border: 1px solid; */
-        text-align: center;       
+        text-align: center;
     }
 
-    .menu-icon{
+    .menu-icon {
         position: absolute;
         right: 50px;
         bottom: 50px;
-        visibility: hidden;
-        /* width: 50px;
-        height: 50px; */
         z-index: 100;
     }
 
-    .menu-icon-btn{
+    .menu-icon-btn {
         border: none;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         background: #ff9800;
+        cursor: pointer;
     }
 
-    .img-menu{
+    .img-menu {
         object-fit: cover;
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
     }
-    .img-menu-icon{
+
+    .img-menu-icon {
         object-fit: cover;
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
     }
-    .img-cancel{
+
+    .img-cancel {
         width: 40px;
         height: 40px;
         object-fit: cover;
     }
 
-    .menu-cancel-btn{
-        width: 40px;
-        height: 40px;
+    .menu-cancel-btn {
+        width: 35px;
+        height: 35px;
         border: none;
         border-radius: 50%;
         background: white;
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
     }
 
+}
+
+/* Freeze Button Styles - Place this at the end of your CSS file, OUTSIDE any @media blocks */
+.freeze-btn {
+    position: fixed;
+    bottom: 270px;
+    left: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    border: 3px solid white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 10000;
+    transition: background 0.3s;
+            left: 30px;
+        /* visibility: visible; */
+        bottom: 160px;
+}
+
+.freeze-btn:active {
+    transform: scale(0.95);
+}
+
+#freezeIcon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+
+/* Mobile optimization for freeze button */
+@media (max-width: 768px) {
+    .freeze-btn {
+        width: 40px;
+        height: 40px;
+        bottom: 20px;
+        left: 18px;
+        /* visibility: visible; */
+        bottom: 160px;
+    }
+    
+    #freezeIcon {
+        width: 20px;
+        height: 20px;
+    }
 }

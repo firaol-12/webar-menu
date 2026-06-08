@@ -293,6 +293,11 @@ html, body {
 }
 
 @media (orientation: portrait) {
+    .freeze-btn{
+        position: fixed;
+        right: 18px;
+        bottom: 160px;
+    }
     #foodList {
         z-index: 100;
         width: 94%;

@@ -1,4 +1,3 @@
-import { CSS3DObject } from "./libs/three.js-r132/examples/jsm/renderers/CSS3DRenderer.js";
 import { mockWithVideo } from "./libs/camera-mock.js";
 import { initGLTFLoader, loadGLTF } from "./libs/loader.js";
 
@@ -11,9 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const start = async () => {
         // mockWithVideo('./assets/mock.mp4');
         const mindarThree = new window.MINDAR.IMAGE.MindARThree({
-            // container: document.body,
-            // imageTargetSrc: './assets/bussines.mind',
-            imageTargetSrc: './assets/bussines.mind',
+            imageTargetSrc: './assets/restaurant_logo.mind',
             container: document.querySelector("#container"),
             uiScanning: "#scanning",
             uiLoading: "no",
@@ -27,71 +24,85 @@ document.addEventListener('DOMContentLoaded', () => {
         let priceItemElements = [];
         let rotationGroup = null;
         let isRotating = false;
-        let isFoodListVisible = false; // Track food list visibility state
+        let isFoodListVisible = false;
+        
+        // 🔧 FREEZE VARIABLES
+        let isFrozen = false;
+        let frozenModelGroup = null;
+        let frozenWorldPosition = new THREE.Vector3();
+        let frozenWorldQuaternion = new THREE.Quaternion();
+        let frozenWorldScale = new THREE.Vector3();
+        let isTargetFound = false;
+        
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
 
         const menu = [
-            { id: 1, calorie: 350, name: "Burger", price: 150, glt: "./assets/pza-8f.glb", catagorie: "breakfast" },
-            { id: 2, calorie: 35, name: "Cheese Burger", price: 180, glt: "./assets/tco-8f.glb", catagorie: "breakfast" },
-            { id: 3, calorie: 400, name: "Pizza Margherita", price: 250, glt: "./assets/tbs-12f.glb", catagorie: "breakfast" },
-            { id: 4, calorie: 360, name: "Chicken Pizza", price: 300, glt: "./assets/gnf-7f.glb", catagorie: "breakfast" },
-            { id: 5, calorie: 30, name: "Pasta Alfredo", price: 220, glt: "./assets/fir.glb", catagorie: "breakfast" },
-            { id: 6, calorie: 350, name: "Pasta Bolognese", price: 240, glt: "./assets/hb-f.glb", catagorie: "breakfast" },
-            { id: 7, calorie: 360, name: "Kitfo", price: 300, glt: "./assets/pza-8f.glb", catagorie: "breakfast" },
-            { id: 8, calorie: 380, name: "Tibs", price: 280, glt: "./assets/tbs-12f.glb", catagorie: "breakfast" },
-            { id: 9, calorie: 750, name: "Shiro", price: 120, glt: "./assets/gnf-7f.glb", catagorie: "lunch" },
-            { id: 10, calorie: 250, name: "Firfir", price: 100, glt: "./assets/fir.glb", catagorie: "lunch" },
-            { id: 11, calorie: 550, name: "French Fries", price: 80, glt: "./assets/tco-8f.glb", catagorie: "lunch" },
-            { id: 12, calorie: 250, name: "Chicken Sandwich", price: 200, glt: "./assets/pza-8f.glb", catagorie: "lunch" },
-            { id: 13, calorie: 120, name: "Beef Sandwich", price: 220, glt: "./assets/tbs-12f.glb", catagorie: "lunch" },
-            { id: 14, calorie: 130, name: "Vegetable Pizza", price: 270, glt: "./assets/fir.glb", catagorie: "lunch" },
-            { id: 15, calorie: 300, name: "Seafood Pizza", price: 350, glt: "./assets/tbs-12f.glb", catagorie: "lunch" },
-            { id: 16, calorie: 600, name: "Spaghetti Carbonara", price: 260, glt: "./assets/gnf-7f.glb", catagorie: "lunch" },
-            { id: 17, calorie: 300, name: "Lasagna", price: 280, glt: "./assets/fir.glb", catagorie: "lunch" },
-            { id: 18, calorie: 330, name: "Doro Wat", price: 320, glt: "./assets/tco-8f.glb", catagorie: "dinner" },
-            { id: 19, calorie: 340, name: "Gomen", price: 140, glt: "./assets/pza-8f.glb", catagorie: "dinner" },
-            { id: 20, calorie: 390, name: "Misir Wat", price: 150, glt: "./assets/tbs-12f.glb", catagorie: "dinner" },
-            { id: 21, calorie: 240, name: "Foul Medames", price: 130, glt: "./assets/gnf-7f.glb", catagorie: "dinner" },
-            { id: 22, calorie: 350, name: "Egg Firfir", price: 140, glt: "./assets/hb-f.glb", catagorie: "dinner" },
-            { id: 23, calorie: 670, name: "Rice with Chicken", price: 240, glt: "./assets/tco-8f.glb", catagorie: "dinner" },
-            { id: 24, calorie: 378, name: "Beef Sandwich", price: 220, glt: "./assets/pza-8f.glb", catagorie: "dinner" },
-            { id: 25, calorie: 352, name: "Vegetable Pizza", price: 270, glt: "./assets/gnf-7f.glb", catagorie: "dinner" },
-            { id: 26, calorie: 323, name: "Seafood Pizza", price: 350, glt: "./assets/hb-f.glb", catagorie: "dinner" },
-            { id: 27, calorie: 385, name: "Spaghetti Carbonara", price: 260, glt: "./assets/tco-8f.glb", catagorie: "dinner" },
-            { id: 28, calorie: 356, name: "Lasagna", price: 280, glt: "./assets/gnf-7f.glb", catagorie: "dinner" },
-            { id: 29, calorie: 325, name: "Doro Wat", price: 320, glt: "./assets/tbs-12f.glb", catagorie: "fasting" },
-            { id: 30, calorie: 643, name: "Gomen", price: 140, glt: "./assets/hb-f.glb", catagorie: "fasting" },
-            { id: 31, calorie: 312, name: "Misir Wat", price: 150, glt: "./assets/fir.glb", catagorie: "fasting" },
-            { id: 32, calorie: 177, name: "Foul Medames", price: 130, glt: "./assets/gnf-7f.glb", catagorie: "fasting" },
-            { id: 33, calorie: 324, name: "Egg Firfir", price: 140, glt: "./assets/pza-8f.glb", catagorie: "fasting" },
-            { id: 34, calorie: 333, name: "Rice with Chicken", price: 240, glt: "./assets/tco-8f.glb", catagorie: "fasting" },
-            { id: 35, calorie: 400, name: "Rice with Beef", price: 260, glt: "./assets/fir.glb", catagorie: "fasting" },
-            { id: 36, calorie: 390, name: "Misir Wat", price: 150, glt: "./assets/tbs-12f.glb", catagorie: "dinner" },
-            { id: 37, calorie: 240, name: "Foul Medames", price: 130, glt: "./assets/gnf-7f.glb", catagorie: "dinner" },
-            { id: 38, calorie: 350, name: "Egg Firfir", price: 140, glt: "./assets/hb-f.glb", catagorie: "dinner" },
-            { id: 39, calorie: 670, name: "Rice with Chicken", price: 240, glt: "./assets/tco-8f.glb", catagorie: "dinner" },
-            { id: 40, calorie: 378, name: "Beef Sandwich", price: 220, glt: "./assets/pza-8f.glb", catagorie: "dinner" },
-            { id: 41, calorie: 352, name: "Vegetable Pizza", price: 270, glt: "./assets/gnf-7f.glb", catagorie: "dinner" },
-            { id: 42, calorie: 323, name: "Seafood Pizza", price: 350, glt: "./assets/hb-f.glb", catagorie: "dinner" },
-            { id: 43, calorie: 385, name: "Spaghetti Carbonara", price: 260, glt: "./assets/tco-8f.glb", catagorie: "dinner" },
-            { id: 44, calorie: 356, name: "Lasagna", price: 280, glt: "./assets/gnf-7f.glb", catagorie: "dinner" },
-            { id: 45, calorie: 325, name: "Doro Wat", price: 320, glt: "./assets/tbs-12f.glb", catagorie: "fasting" },
-            { id: 46, calorie: 643, name: "Gomen", price: 140, glt: "./assets/hb-f.glb", catagorie: "fasting" },
-            { id: 47, calorie: 312, name: "Misir Wat", price: 150, glt: "./assets/fir.glb", catagorie: "fasting" },
-            { id: 48, calorie: 177, name: "Foul Medames", price: 130, glt: "./assets/gnf-7f.glb", catagorie: "fasting" },
-            { id: 49, calorie: 324, name: "Egg Firfir", price: 140, glt: "./assets/pza-8f.glb", catagorie: "fasting" },
-            { id: 50, calorie: 333, name: "Rice with Chicken", price: 240, glt: "./assets/tco-8f.glb", catagorie: "fasting" },
-            { id: 51, calorie: 400, name: "Rice with Beef", price: 260, glt: "./assets/fir.glb", catagorie: "fasting" }
+            { id: 1, calorie: 350, name: "Burger", price: 150, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/hb-f_ggiyqa.glb", catagorie: "breakfast" },
+            { id: 2, calorie: 35, name: "Cheese Burger", price: 180, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518856/tco-8f_gmvnn2.glb", catagorie: "breakfast" },
+            { id: 3, calorie: 400, name: "Pizza Margherita", price: 250, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518858/tbs-12f_yz30yx.glb", catagorie: "breakfast" },
+            { id: 4, calorie: 360, name: "Chicken Pizza", price: 300, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "breakfast" },
+            { id: 5, calorie: 30, name: "Pasta Alfredo", price: 220, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518827/fir_kx7h5f.glb", catagorie: "breakfast" },
+            { id: 6, calorie: 350, name: "Pasta Bolognese", price: 240, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/hb-f_ggiyqa.glb", catagorie: "breakfast" },
+            { id: 7, calorie: 360, name: "Kitfo", price: 300, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518848/pza-8f_phh4wk.glb", catagorie: "breakfast" },
+            { id: 8, calorie: 380, name: "Tibs", price: 280, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518858/tbs-12f_yz30yx.glb", catagorie: "breakfast" },
+            { id: 9, calorie: 750, name: "Shiro", price: 120, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "lunch" },
+            { id: 10, calorie: 250, name: "Firfir", price: 100, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518827/fir_kx7h5f.glb", catagorie: "lunch" },
+            { id: 11, calorie: 550, name: "French Fries", price: 80, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518856/tco-8f_gmvnn2.glb", catagorie: "lunch" },
+            { id: 12, calorie: 250, name: "Chicken Sandwich", price: 200, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518848/pza-8f_phh4wk.glb", catagorie: "lunch" },
+            { id: 13, calorie: 120, name: "Beef Sandwich", price: 220, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518858/tbs-12f_yz30yx.glb", catagorie: "lunch" },
+            { id: 14, calorie: 130, name: "Vegetable Pizza", price: 270, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518827/fir_kx7h5f.glb", catagorie: "lunch" },
+            { id: 15, calorie: 300, name: "Seafood Pizza", price: 350, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518858/tbs-12f_yz30yx.glb", catagorie: "lunch" },
+            { id: 16, calorie: 600, name: "Spaghetti Carbonara", price: 260, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "lunch" },
+            { id: 17, calorie: 300, name: "Lasagna", price: 280, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518827/fir_kx7h5f.glb", catagorie: "lunch" },
+            { id: 18, calorie: 330, name: "Doro Wat", price: 320, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518856/tco-8f_gmvnn2.glb", catagorie: "dinner" },
+            { id: 19, calorie: 340, name: "Gomen", price: 140, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518848/pza-8f_phh4wk.glb", catagorie: "dinner" },
+            { id: 20, calorie: 390, name: "Misir Wat", price: 150, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518858/tbs-12f_yz30yx.glb", catagorie: "dinner" },
+            { id: 21, calorie: 240, name: "Foul Medames", price: 130, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "dinner" },
+            { id: 22, calorie: 350, name: "Egg Firfir", price: 140, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/hb-f_ggiyqa.glb", catagorie: "dinner" },
+            { id: 23, calorie: 670, name: "Rice with Chicken", price: 240, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518856/tco-8f_gmvnn2.glb", catagorie: "dinner" },
+            { id: 24, calorie: 378, name: "Beef Sandwich", price: 220, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518848/pza-8f_phh4wk.glb", catagorie: "dinner" },
+            { id: 25, calorie: 352, name: "Vegetable Pizza", price: 270, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "dinner" },
+            { id: 26, calorie: 323, name: "Seafood Pizza", price: 350, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/hb-f_ggiyqa.glb", catagorie: "dinner" },
+            { id: 27, calorie: 385, name: "Spaghetti Carbonara", price: 260, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518856/tco-8f_gmvnn2.glb", catagorie: "dinner" },
+            { id: 28, calorie: 356, name: "Lasagna", price: 280, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "dinner" },
+            { id: 29, calorie: 325, name: "Doro Wat", price: 320, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518858/tbs-12f_yz30yx.glb", catagorie: "fasting" },
+            { id: 30, calorie: 643, name: "Gomen", price: 140, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/hb-f_ggiyqa.glb", catagorie: "fasting" },
+            { id: 31, calorie: 312, name: "Misir Wat", price: 150, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518827/fir_kx7h5f.glb", catagorie: "fasting" },
+            { id: 32, calorie: 177, name: "Foul Medames", price: 130, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "fasting" },
+            { id: 33, calorie: 324, name: "Egg Firfir", price: 140, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518848/pza-8f_phh4wk.glb", catagorie: "fasting" },
+            { id: 34, calorie: 333, name: "Rice with Chicken", price: 240, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518856/tco-8f_gmvnn2.glb", catagorie: "fasting" },
+            { id: 35, calorie: 400, name: "Rice with Beef", price: 260, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518827/fir_kx7h5f.glb", catagorie: "fasting" },
+            { id: 36, calorie: 390, name: "Misir Wat", price: 150, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518858/tbs-12f_yz30yx.glb", catagorie: "dinner" },
+            { id: 37, calorie: 240, name: "Foul Medames", price: 130, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "dinner" },
+            { id: 38, calorie: 350, name: "Egg Firfir", price: 140, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/hb-f_ggiyqa.glb", catagorie: "dinner" },
+            { id: 39, calorie: 670, name: "Rice with Chicken", price: 240, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518856/tco-8f_gmvnn2.glb", catagorie: "dinner" },
+            { id: 40, calorie: 378, name: "Beef Sandwich", price: 220, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518848/pza-8f_phh4wk.glb", catagorie: "dinner" },
+            { id: 41, calorie: 352, name: "Vegetable Pizza", price: 270, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "dinner" },
+            { id: 42, calorie: 323, name: "Seafood Pizza", price: 350, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/hb-f_ggiyqa.glb", catagorie: "dinner" },
+            { id: 43, calorie: 385, name: "Spaghetti Carbonara", price: 260, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518856/tco-8f_gmvnn2.glb", catagorie: "dinner" },
+            { id: 44, calorie: 356, name: "Lasagna", price: 280, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "dinner" },
+            { id: 45, calorie: 325, name: "Doro Wat", price: 320, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518858/tbs-12f_yz30yx.glb", catagorie: "fasting" },
+            { id: 46, calorie: 643, name: "Gomen", price: 140, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/hb-f_ggiyqa.glb", catagorie: "fasting" },
+            { id: 47, calorie: 312, name: "Misir Wat", price: 150, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518827/fir_kx7h5f.glb", catagorie: "fasting" },
+            { id: 48, calorie: 177, name: "Foul Medames", price: 130, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518831/gnf-7f_tfdhmn.glb", catagorie: "fasting" },
+            { id: 49, calorie: 324, name: "Egg Firfir", price: 140, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518848/pza-8f_phh4wk.glb", catagorie: "fasting" },
+            { id: 50, calorie: 333, name: "Rice with Chicken", price: 240, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518856/tco-8f_gmvnn2.glb", catagorie: "fasting" },
+            { id: 51, calorie: 400, name: "Rice with Beef", price: 260, glt: "https://res.cloudinary.com/djw0srhou/image/upload/v1776518827/fir_kx7h5f.glb", catagorie: "fasting" }
         ];
 
-        const { renderer, cssRenderer, scene, cssScene, camera } = mindarThree;
+        const { renderer, scene, camera } = mindarThree;
 
         initGLTFLoader(renderer);
 
         const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
         scene.add(light);
+        
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        dirLight.position.set(1, 1, 1);
+        scene.add(dirLight);
 
+        // UI Elements
         const categoriesEl = document.getElementById('categories');
         const view3dEl = document.getElementById('view3d');
         const orderSectionEl = document.getElementById('orderSection');
@@ -100,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const priceContainer = document.getElementById('priceContainer');
         const prevBtn = document.querySelector('#prevBtn');
         const nextBtn = document.querySelector('#nextBtn');
-        const fullItem = document.getElementById('full-item');
         const orderBtn = document.getElementById('order-btn');
         const orderNmr = document.getElementById('order-nbr');
         const allBtn = document.getElementById('all');
@@ -113,11 +123,130 @@ document.addEventListener('DOMContentLoaded', () => {
         const foodList = document.getElementById('foodList');
         const lower = document.getElementById('lower');
         const cancelBtn = document.getElementById('cancel');
-        const menuItems = document.querySelector('.menu-item');
-        const menuICancel = document.querySelector('.menu-icon');
         const lowerPrice = document.getElementById('lower-price');
         const lowerName = document.getElementById('lower-name');
         const lowerCalorie = document.getElementById('lower-calorie');
+        
+        // Freeze button
+        const freezeBtn = document.getElementById('freezeBtn');
+        const freezeIcon = document.getElementById('freezeIcon');
+        const scanningEl = document.getElementById('scanning');
+
+        // 🔧 FREEZE FUNCTION
+        function freezeModel() {
+            if (!rotationGroup || !anchor) return;
+            
+            console.log("🔒 FREEZING 3D MODEL!");
+            
+            // Save world position
+            rotationGroup.getWorldPosition(frozenWorldPosition);
+            rotationGroup.getWorldQuaternion(frozenWorldQuaternion);
+            rotationGroup.getWorldScale(frozenWorldScale);
+            
+            // Create frozen group
+            frozenModelGroup = new THREE.Group();
+            
+            while(rotationGroup.children.length > 0) {
+                const child = rotationGroup.children[0];
+                rotationGroup.remove(child);
+                frozenModelGroup.add(child);
+            }
+            
+            // Remove from anchor and add to scene
+            anchor.group.remove(rotationGroup);
+            scene.add(frozenModelGroup);
+            
+            // Set frozen position
+            frozenModelGroup.position.copy(frozenWorldPosition);
+            frozenModelGroup.quaternion.copy(frozenWorldQuaternion);
+            frozenModelGroup.scale.copy(frozenWorldScale);
+            
+            rotationGroup = frozenModelGroup;
+            
+            isFrozen = true;
+            freezeBtn.style.background = "#4CAF50";
+            freezeIcon.src = 'https://res.cloudinary.com/djw0srhou/image/upload/q_auto:eco,f_auto,w_240,c_scale/v1776499186/unlock_twp3et.png';
+            
+            // Keep scanning hidden when frozen
+            scanningEl.classList.add('hidden');
+        }
+
+        // 🔧 UNFREEZE FUNCTION - Show scanning immediately
+        function unfreezeModel() {
+            if (!frozenModelGroup || !anchor) return;
+            
+            console.log("🔓 UNFREEZING 3D MODEL!");
+            
+            // Create new rotation group
+            const newRotationGroup = new THREE.Group();
+            
+            // Move children back
+            while(frozenModelGroup.children.length > 0) {
+                const child = frozenModelGroup.children[0];
+                frozenModelGroup.remove(child);
+                newRotationGroup.add(child);
+            }
+            
+            // Remove from scene and add to anchor
+            scene.remove(frozenModelGroup);
+            anchor.group.add(newRotationGroup);
+            
+            // Reset position relative to anchor
+            newRotationGroup.position.set(0, 0, 0);
+            newRotationGroup.quaternion.identity();
+            newRotationGroup.scale.set(1, 1, 1);
+            
+            rotationGroup = newRotationGroup;
+            frozenModelGroup = null;
+            
+            isFrozen = false;
+            freezeBtn.style.background = "rgba(0, 0, 0, 0.7)";
+            freezeIcon.src = 'https://res.cloudinary.com/djw0srhou/image/upload/q_auto:eco,f_auto,w_240,c_scale/v1776499186/padlock_vuzsyt.png';
+            
+            // 🔧 Show scanning if target is not currently found
+            if (!isTargetFound) {
+                scanningEl.classList.remove('hidden');
+                // Hide UI until target is found again
+                hideAllUI();
+            }
+        }
+
+        // 🔧 Hide all UI elements
+        function hideAllUI() {
+            categoriesEl.style.visibility = "hidden";
+            view3dEl.style.visibility = "hidden";
+            orderSectionEl.style.visibility = "hidden";
+            lower.classList.remove('show-ui');
+            lower.classList.add('hidden-ui');
+            menuIconBtn.style.visibility = 'hidden';
+            foodList.classList.remove('show-ui');
+            foodList.classList.add('hidden-ui');
+            isFoodListVisible = false;
+            freezeBtn.style.visibility = 'hidden';
+        }
+
+        // 🔧 Show all UI elements
+        function showAllUI() {
+            categoriesEl.style.visibility = "visible";
+            view3dEl.style.visibility = "visible";
+            orderSectionEl.style.visibility = "visible";
+            lower.classList.remove('hidden-ui');
+            lower.classList.add('show-ui');
+            menuIconBtn.style.visibility = 'visible';
+            freezeBtn.style.visibility = 'visible';
+
+        }
+
+        // 🔧 FREEZE BUTTON
+        if (freezeBtn) {
+            freezeBtn.addEventListener('click', function() {
+                if (!isFrozen) {
+                    freezeModel();
+                } else {
+                    unfreezeModel();
+                }
+            });
+        }
 
         function highlightCurrentMenuItem(index) {
             menuItemElements.forEach((item, i) => {
@@ -166,20 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        function resetAnchor(anchor) {
-            if (!anchor) return;
-
-            while (anchor.group.children.length > 0) {
-                const obj = anchor.group.children[0];
-                anchor.group.remove(obj);
-                disposeModel(obj);
-            }
-        }
-
-        function forceTextureCleanup(renderer) {
-            renderer.properties.dispose();
-        }
-
         let currentDisplayedItems = [];
         let selectedItem = null;
 
@@ -218,7 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentDisplayedItems.length === 0) return;
 
             const firstItem = currentDisplayedItems[0];
-
             selectedItem = firstItem;
             currentItemIndex = 0;
 
@@ -228,18 +342,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const firstData = (category) => {
-            if (currentModel && anchor) {
-                anchor.group.remove(currentModel);
+            if (currentModel) {
+                if (isFrozen && frozenModelGroup) {
+                    scene.remove(frozenModelGroup);
+                } else if (rotationGroup && anchor) {
+                    anchor.group.remove(rotationGroup);
+                }
                 disposeModel(currentModel);
                 currentModel = null;
+                rotationGroup = null;
+                frozenModelGroup = null;
             }
 
             for (const id in modelCache) {
                 disposeModel(modelCache[id]);
                 delete modelCache[id];
             }
-
-            resetAnchor(anchor);
 
             currentDisplayedItems = category === 'all'
                 ? menu
@@ -296,22 +414,20 @@ document.addEventListener('DOMContentLoaded', () => {
             isLoadingModel = true;
 
             try {
-                if (currentModel && anchor) {
-                    const oldModel = currentModel;
-                    anchor.group.remove(oldModel);
+                if (currentModel) {
+                    if (isFrozen && frozenModelGroup) {
+                        while(frozenModelGroup.children.length > 0) {
+                            const child = frozenModelGroup.children[0];
+                            frozenModelGroup.remove(child);
+                        }
+                        scene.remove(frozenModelGroup);
+                    } else if (rotationGroup && anchor) {
+                        anchor.group.remove(rotationGroup);
+                    }
+                    disposeModel(currentModel);
                     currentModel = null;
-
-                    setTimeout(() => {
-                        disposeModel(oldModel);
-                        resetAnchor(anchor);
-                    }, 300);
-
-                    renderer.renderLists.dispose();
-                    renderer.info.reset();
-                    forceTextureCleanup(renderer);
+                    rotationGroup = null;
                 }
-
-                await new Promise(r => setTimeout(r, 0));
 
                 const gltf = await loadGLTF(item.glt, renderer);
                 currentModel = gltf.scene;
@@ -319,9 +435,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentModel.scale.set(1.5, 1.5, 1.5);
                 currentModel.position.set(0, -0.3, 0);
 
-                rotationGroup = new THREE.Group();
-                rotationGroup.add(currentModel);
-                anchor.group.add(rotationGroup);
+                if (isFrozen) {
+                    frozenModelGroup = new THREE.Group();
+                    frozenModelGroup.add(currentModel);
+                    scene.add(frozenModelGroup);
+                    
+                    frozenModelGroup.position.copy(frozenWorldPosition);
+                    frozenModelGroup.quaternion.copy(frozenWorldQuaternion);
+                    frozenModelGroup.scale.copy(frozenWorldScale);
+                    
+                    rotationGroup = frozenModelGroup;
+                    scanningEl.classList.add('hidden');
+                } else {
+                    rotationGroup = new THREE.Group();
+                    rotationGroup.add(currentModel);
+                    anchor.group.add(rotationGroup);
+                    frozenModelGroup = null;
+                }
             } catch (e) {
                 console.error(e);
             } finally {
@@ -330,18 +460,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const cartPanel = document.getElementById('cart-panel');
-
         let isOrdering = false;
 
         orderBtn.addEventListener('click', () => {
             if (isOrdering || !selectedItem) return;
-
             isOrdering = true;
             addToCart({ ...selectedItem });
-
-            setTimeout(() => {
-                isOrdering = false;
-            }, 200);
+            setTimeout(() => { isOrdering = false; }, 200);
         });
 
         let cart = [];
@@ -361,41 +486,27 @@ document.addEventListener('DOMContentLoaded', () => {
         function renderCart() {
             const cartItemsEl = document.getElementById('cart-items');
             const totalPriceEl = document.getElementById('cart-total-price');
-
             cartItemsEl.innerHTML = "";
-
             let total = 0;
+            
             cart.forEach((item, index) => {
                 total += item.price;
-
                 const li = document.createElement('li');
                 li.className = 'cart-item';
-
                 const text = document.createElement('span');
                 text.textContent = `${item.name} - ${item.price} ETB`;
-
                 const removeBtn = document.createElement('button');
-                const img = document.createElement('img');
-                img.src = "./assets/delete.png";
-                img.style.width = "16px";
-                img.style.height = "16px";
-
-                removeBtn.appendChild(img);
-
-                removeBtn.addEventListener('click', () => {
-                    removeFromCart(index);
-                });
-
+                removeBtn.innerHTML = '✕';
+                removeBtn.addEventListener('click', () => removeFromCart(index));
                 li.appendChild(text);
                 li.appendChild(removeBtn);
                 cartItemsEl.appendChild(li);
             });
 
-            totalPriceEl.textContent = `${total} ETB`
+            totalPriceEl.textContent = `${total} ETB`;
         }
 
         const backMenuBtn = document.getElementById('back-menu-btn');
-
         backMenuBtn.addEventListener('click', () => {
             cartPanel.classList.remove('show');
         });
@@ -403,8 +514,6 @@ document.addEventListener('DOMContentLoaded', () => {
         orderList.addEventListener('click', () => {
             cartPanel.classList.add('show');
         });
-
-        const cssAnchor = mindarThree.addCSSAnchor(0);
 
         prevBtn.addEventListener('click', () => {
             if (!isLoadingModel) {
@@ -416,24 +525,17 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.addEventListener('click', () => {
             if (!isLoadingModel) {
                 currentItemIndex = (currentItemIndex + 1) % currentDisplayedItems.length;
-                updateDisplayedItem(currentItemIndex)
+                updateDisplayedItem(currentItemIndex);
             }
         });
 
-        const scanningEl = document.getElementById('scanning');
-        scanningEl.classList.remove('hidden');
-
-        // Show food list with proper hide of lower section
+        // Show food list
         menuIconBtn.addEventListener('click', () => {
             if (!isFoodListVisible) {
                 isFoodListVisible = true;
-                // Immediately hide lower section
                 lower.classList.remove('show-ui');
                 lower.classList.add('hidden-ui');
-                // Hide menu icon
                 menuIconBtn.style.visibility = 'hidden';
-                
-                // Show food list after a tiny delay to ensure lower is hidden first
                 setTimeout(() => {
                     foodList.classList.remove('hidden-ui');
                     foodList.classList.add('show-ui');
@@ -445,11 +547,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cancelBtn.addEventListener('click', () => {
             if (isFoodListVisible) {
                 isFoodListVisible = false;
-                // Hide food list
                 foodList.classList.remove('show-ui');
                 foodList.classList.add('hidden-ui');
-                
-                // Show lower section
                 lower.classList.remove('hidden-ui');
                 lower.classList.add('show-ui');
                 menuIconBtn.style.visibility = 'visible';
@@ -458,91 +557,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updateLowerUI(item) {
             if (!item) return;
-
             lowerPrice.textContent = `${item.price} birr`;
             lowerName.textContent = item.name;
             lowerCalorie.textContent = `${item.calorie} kcal` || "N/A";
         }
 
-        function isModelClicked(event) {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            raycaster.setFromCamera(mouse, camera);
-
-            if (!rotationGroup) return false;
-
-            const intersects = raycaster.intersectObjects(
-                rotationGroup.children,
-                true
-            );
-
-            return intersects.length > 0;
-        }
-
         anchor = mindarThree.addAnchor(0);
-        updateDisplayedItem(currentItemIndex);
 
-        cssAnchor.onTargetFound = () => {
+        // 🔧 Target found - Show UI and hide scanning
+        anchor.onTargetFound = () => {
+            isTargetFound = true;
             scanningEl.classList.add('hidden');
-            console.log("Target found");
-            categoriesEl.style.visibility = "visible";
-            view3dEl.style.visibility = "visible";
-            orderSectionEl.style.visibility = "visible";
             
-            // Show lower section and menu icon when target is found
-            // Only show if food list is NOT visible
-            if (!isFoodListVisible) {
-                lower.classList.remove('hidden-ui');
-                lower.classList.add('show-ui');
-                menuIconBtn.style.visibility = 'visible';
-            } else {
-                // If food list is visible, make sure lower is hidden
-                lower.classList.remove('show-ui');
-                lower.classList.add('hidden-ui');
-                menuIconBtn.style.visibility = 'hidden';
+            // Show UI if not frozen (frozen UI is already managed)
+            if (!isFrozen) {
+                showAllUI();
             }
+            console.log("Target found");
         }
 
-        cssAnchor.onTargetLost = () => {
-            scanningEl.classList.remove('hidden');
-            console.log("Target lost!");
-            categoriesEl.style.visibility = 'hidden';
-            view3dEl.style.visibility = 'hidden';
-            orderSectionEl.style.visibility = 'hidden';
+        // 🔧 Target lost - Hide UI and show scanning if not frozen
+        anchor.onTargetLost = () => {
+            isTargetFound = false;
             
-            // Hide both food list and lower section when target is lost
-            foodList.classList.remove('show-ui');
-            foodList.classList.add('hidden-ui');
-            lower.classList.remove('show-ui');
-            lower.classList.add('hidden-ui');
-            menuIconBtn.style.visibility = 'hidden';
-            
-            isFoodListVisible = false;
+            if (!isFrozen) {
+                scanningEl.classList.remove('hidden');
+                hideAllUI();
+            }
+            console.log("Target lost - Frozen:", isFrozen);
         }
+
+        // 🔧 Start with UI hidden, only scanning visible
+        hideAllUI();
+        scanningEl.classList.remove('hidden');
 
         updateDisplayedItem(currentItemIndex);
         setActive(allBtn);
         firstData('all');
 
+        // Rotation controls
         let isDragging = false;
         let lastX = 0;
         let lastY = 0;
+        const ROTATE_SPEED = 0.01;
 
-        const ROTATE_SPEED = 0.005;
-
-        window.addEventListener("touchstart", (e) => {
+        function handleRotateStart(x, y) {
             if (!rotationGroup) return;
             isDragging = true;
-            lastX = e.touches[0].clientX;
-            lastY = e.touches[0].clientY;
-        });
+            lastX = x;
+            lastY = y;
+        }
 
-        window.addEventListener("touchmove", (e) => {
+        function handleRotateMove(x, y) {
             if (!isDragging || !rotationGroup) return;
-
-            const x = e.touches[0].clientX;
-            const y = e.touches[0].clientY;
 
             const deltaX = x - lastX;
             const deltaY = y - lastY;
@@ -552,55 +619,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
             rotationGroup.rotation.x = THREE.MathUtils.clamp(
                 rotationGroup.rotation.x,
-                -Math.PI / 4,
-                Math.PI / 4
+                -Math.PI / 3,
+                Math.PI / 3
             );
 
             lastX = x;
             lastY = y;
+        }
+
+        function handleRotateEnd() {
+            isDragging = false;
+        }
+
+        window.addEventListener("touchstart", (e) => {
+            handleRotateStart(e.touches[0].clientX, e.touches[0].clientY);
         });
 
-        window.addEventListener("touchend", () => {
-            isDragging = false;
+        window.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            handleRotateMove(e.touches[0].clientX, e.touches[0].clientY);
         });
+
+        window.addEventListener("touchend", handleRotateEnd);
 
         window.addEventListener("mousedown", (e) => {
-            if (!isModelClicked(e)) return;
-
-            isRotating = true;
-            lastX = e.clientX;
-            lastY = e.clientY;
+            handleRotateStart(e.clientX, e.clientY);
         });
 
         window.addEventListener("mousemove", (e) => {
-            if (!isRotating || !rotationGroup) return;
-
-            const dx = e.clientX - lastX;
-            const dy = e.clientY - lastY;
-
-            rotationGroup.rotation.y += dx * 0.005;
-            rotationGroup.rotation.x += dy * 0.005;
-
-            rotationGroup.rotation.x = THREE.MathUtils.clamp(
-                rotationGroup.rotation.x,
-                -Math.PI / 4,
-                Math.PI / 4
-            );
-
-            lastX = e.clientX;
-            lastY = e.clientY;
+            handleRotateMove(e.clientX, e.clientY);
         });
 
-        window.addEventListener("mouseup", () => {
-            isRotating = false;
-        });
+        window.addEventListener("mouseup", handleRotateEnd);
 
-        setActive(allBtn);
-        firstData('all');
         await mindarThree.start();
 
         renderer.setAnimationLoop(() => {
-            cssRenderer.render(cssScene, camera);
             renderer.render(scene, camera);
         });
     };
