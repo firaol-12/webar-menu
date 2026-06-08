@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
             frozenModelGroup = null;
             
             isFrozen = false;
-            freezeBtn.style.background = "rgba(0, 0, 0, 0.7)";
+            freezeBtn.style.background = "rgba(255, 255, 255)";
             freezeIcon.src = 'https://res.cloudinary.com/djw0srhou/image/upload/q_auto:eco,f_auto,w_240,c_scale/v1776499186/padlock_vuzsyt.png';
             
             // 🔧 Show scanning if target is not currently found
