@@ -591,6 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hideAllUI();
         scanningEl.classList.remove('hidden');
 
+
         updateDisplayedItem(currentItemIndex);
         setActive(allBtn);
         firstData('all');

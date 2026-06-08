@@ -525,10 +525,7 @@ html, body {
         justify-content: center;
         padding: 0;
         z-index: 100;
-        transition: background 0.3s;
-            left: 30px; 
-            visibility: visible; 
-            bottom: 160px;
+
     }
 
     #freezeIcon {
@@ -764,9 +761,6 @@ html, body {
         padding: 0;
         z-index: 100;
         transition: background 0.3s;
-            left: 30px; 
-            visibility: hidden; 
-            bottom: 160px;
     }
     #freezeIcon {
         object-fit: cover;
